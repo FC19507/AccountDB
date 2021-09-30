@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,36 +10,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import antlr.collections.List;
-
 @RestController
 @RequestMapping("account")
 public class AccountController {
-	ArrayList<Account> accounts = new ArrayList<Account>();
 	@Autowired
-	AccountService accountservice;
+	AccountService accountService;
 	@GetMapping("/")
-	List<Account> getAcount() {
-		System.out.println("called..");
-		return accountservice.getAccount();
-		}
+	List<Account> getAccounts() {
+		System.out.println("called");
+		return accountService.getAccounts();
+	}
 
-	@GetMapping("/{name}")
-    Account getAccount(@PathVariable String name) {
-		for(Account account: accounts) {
-			if(account.getName().equals(name)) {
-				return account;
-			}
-		}
-		System.out.println("Account not found");
-		return null;
+	@GetMapping("/{id}")
+    void getAccount(@PathVariable Integer id) {
+		System.out.println("Found the required account");
 	}
 
 	@PostMapping
-	String postAccount(@RequestBody Account account) {
-		accountservice.save(account);
-		System.out.println("GOT acount  USER"+account.getName());;
-		return "post called";
-
+	String saveAccount(@RequestBody Account account) {
+		accountService.save(account);
+		System.out.println("called");
+		System.out.println("Name : " + account.getName());
+		System.out.println("Account Number: " + account.getAccNo());
+		System.out.println("Address : " + account.getAddress());
+		System.out.println("Available Balance : " + account.getBalance());
+		System.out.println("Date of Creation : " + account.getDate());
+		System.out.println("Account Status : " + account.getStatus());
+		return "Account details displayed";
 	}
 }
+
